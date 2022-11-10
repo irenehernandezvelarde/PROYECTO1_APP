@@ -22,7 +22,7 @@
         app:layout_constraintVertical_bias="0.13" />
 
     <EditText
-        android:id="@+id/inputPasswordLogin"
+        android:id="@+id/inputUsernameLogin"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="32dp"
@@ -46,7 +46,7 @@
         app:layout_constraintTop_toBottomOf="@+id/logo" />
 
     <EditText
-        android:id="@+id/inputEmail"
+        android:id="@+id/inputID"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginTop="16dp"
@@ -63,9 +63,9 @@
         android:paddingBottom="10dp"
         android:textColor="@color/black"
         android:textColorHint="@color/white"
-        app:layout_constraintEnd_toEndOf="@+id/inputPasswordLogin"
-        app:layout_constraintStart_toStartOf="@+id/inputPasswordLogin"
-        app:layout_constraintTop_toBottomOf="@+id/inputPasswordLogin" />
+        app:layout_constraintEnd_toEndOf="@+id/inputUsernameLogin"
+        app:layout_constraintStart_toStartOf="@+id/inputUsernameLogin"
+        app:layout_constraintTop_toBottomOf="@+id/inputUsernameLogin" />
 
     <EditText
         android:id="@+id/inputPassword"
@@ -85,12 +85,12 @@
         android:paddingBottom="10dp"
         android:textColor="@color/black"
         android:textColorHint="@color/white"
-        app:layout_constraintEnd_toEndOf="@+id/inputEmail"
-        app:layout_constraintStart_toStartOf="@+id/inputEmail"
-        app:layout_constraintTop_toBottomOf="@+id/inputEmail" />
+        app:layout_constraintEnd_toEndOf="@+id/inputID"
+        app:layout_constraintStart_toStartOf="@+id/inputID"
+        app:layout_constraintTop_toBottomOf="@+id/inputID" />
 
     <EditText
-        android:id="@+id/inputConfirmPassword"
+        android:id="@+id/inputPasswordLogin"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginTop="16dp"
@@ -120,9 +120,9 @@
         android:text="REGISTER"
         android:textColor="@color/black"
         app:iconTint="@color/black"
-        app:layout_constraintEnd_toEndOf="@+id/inputConfirmPassword"
-        app:layout_constraintStart_toStartOf="@+id/inputConfirmPassword"
-        app:layout_constraintTop_toBottomOf="@+id/inputConfirmPassword"
+        app:layout_constraintEnd_toEndOf="@+id/inputPasswordLogin"
+        app:layout_constraintStart_toStartOf="@+id/inputPasswordLogin"
+        app:layout_constraintTop_toBottomOf="@+id/inputPasswordLogin"
         app:rippleColor="@color/black" />
 
     <TextView

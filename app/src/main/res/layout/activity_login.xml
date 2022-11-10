@@ -22,17 +22,17 @@
         app:layout_constraintVertical_bias="0.13" />
 
     <EditText
-        android:id="@+id/inputPasswordLogin"
+        android:id="@+id/inputUsernameLogin"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="32dp"
         android:layout_marginTop="16dp"
         android:layout_marginEnd="32dp"
         android:background="@drawable/inpunt_bg"
-        android:drawableLeft="@drawable/ic_check"
+        android:drawableLeft="@drawable/ic_person"
         android:drawablePadding="10dp"
         android:ems="10"
-        android:hint="Password"
+        android:hint="Username"
         android:inputType="textPersonName"
         android:minHeight="48dp"
         android:paddingLeft="20dp"
@@ -44,18 +44,18 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/inputEmail" />
+        app:layout_constraintTop_toBottomOf="@+id/inputID" />
 
     <EditText
-        android:id="@+id/inputEmail"
+        android:id="@+id/inputID"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginTop="32dp"
         android:background="@drawable/inpunt_bg"
-        android:drawableLeft="@drawable/ic_email"
+        android:drawableLeft="@drawable/ic_baseline_fingerprint_24"
         android:drawablePadding="10dp"
         android:ems="10"
-        android:hint="Enter Email..."
+        android:hint="Enter ID..."
         android:inputType="textPersonName"
         android:minHeight="48dp"
         android:paddingLeft="20dp"
@@ -64,33 +64,54 @@
         android:paddingBottom="10dp"
         android:textColor="@color/black"
         android:textColorHint="@color/white"
-        app:layout_constraintEnd_toEndOf="@+id/inputPasswordLogin"
-        app:layout_constraintStart_toStartOf="@+id/inputPasswordLogin"
+        app:layout_constraintEnd_toEndOf="@+id/inputUsernameLogin"
+        app:layout_constraintStart_toStartOf="@+id/inputUsernameLogin"
         app:layout_constraintTop_toBottomOf="@+id/logo" />
 
-    <TextView
-        android:id="@+id/forgotPassword"
-        android:layout_width="wrap_content"
+    <EditText
+        android:id="@+id/inputPasswordLogin"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginTop="16dp"
+        android:background="@drawable/inpunt_bg"
+        android:drawableLeft="@drawable/ic_check"
+        android:drawablePadding="10dp"
+        android:ems="10"
+        android:hint="Password"
+        android:inputType="textPersonName"
+        android:minHeight="48dp"
+        android:paddingLeft="20dp"
+        android:paddingTop="10dp"
+        android:paddingRight="10dp"
+        android:paddingBottom="10dp"
+        android:textColorHint="@color/white"
+        app:layout_constraintEnd_toEndOf="@+id/inputUsernameLogin"
+        app:layout_constraintStart_toStartOf="@+id/inputUsernameLogin"
+        app:layout_constraintTop_toBottomOf="@+id/inputUsernameLogin" />
+
+    <TextView
+        android:id="@+id/forgotPasswordLogin"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="76dp"
         android:text="Forgot Password ?"
         android:textColor="@color/white"
-        app:layout_constraintEnd_toEndOf="@+id/inputPasswordLogin"
-        app:layout_constraintHorizontal_bias="1.0"
-        app:layout_constraintStart_toStartOf="@+id/inputPasswordLogin"
-        app:layout_constraintTop_toBottomOf="@+id/inputPasswordLogin" />
+        app:layout_constraintEnd_toEndOf="@+id/inputUsernameLogin"
+        app:layout_constraintHorizontal_bias="0.969"
+        app:layout_constraintStart_toStartOf="@+id/inputUsernameLogin"
+        app:layout_constraintTop_toBottomOf="@+id/inputUsernameLogin" />
 
     <androidx.appcompat.widget.AppCompatButton
         android:id="@+id/brnLogin"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_marginTop="24dp"
+        android:layout_marginTop="16dp"
         android:background="@drawable/btn_bg"
         android:backgroundTint="@color/white"
         android:text="Login"
-        app:layout_constraintEnd_toEndOf="@+id/inputPasswordLogin"
-        app:layout_constraintStart_toStartOf="@+id/inputPasswordLogin"
-        app:layout_constraintTop_toBottomOf="@+id/forgotPassword"
+        app:layout_constraintEnd_toEndOf="@+id/inputUsernameLogin"
+        app:layout_constraintStart_toStartOf="@+id/inputUsernameLogin"
+        app:layout_constraintTop_toBottomOf="@+id/forgotPasswordLogin"
         tools:ignore="MissingConstraints" />
 
     <LinearLayout
@@ -140,7 +161,7 @@
         app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/linearLayout"
-        app:layout_constraintVertical_bias="0.13" />
+        app:layout_constraintVertical_bias="0.17000002" />
 
     <androidx.appcompat.widget.AppCompatButton
         android:id="@+id/btnFacebook"
@@ -161,6 +182,5 @@
         app:layout_constraintStart_toEndOf="@+id/btnGoogle"
         app:layout_constraintTop_toTopOf="@+id/btnGoogle"
         app:layout_constraintVertical_bias="0.0" />
-
 
 </androidx.constraintlayout.widget.ConstraintLayout>
