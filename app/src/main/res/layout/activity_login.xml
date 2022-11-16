@@ -11,7 +11,7 @@
         android:id="@+id/logo"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Login"
+        android:text="@string/login"
         android:textColor="@color/white"
         android:textSize="34sp"
         android:textStyle="bold"
@@ -44,7 +44,8 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/inputID" />
+        app:layout_constraintTop_toBottomOf="@+id/inputID"
+        android:autofillHints="" />
 
     <EditText
         android:id="@+id/inputID"
@@ -74,45 +75,46 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="16dp"
         android:background="@drawable/inpunt_bg"
-        android:drawableLeft="@drawable/ic_check"
+        android:drawableStart="@drawable/ic_check"
         android:drawablePadding="10dp"
         android:ems="10"
-        android:hint="Password"
+        android:hint="@string/password"
         android:inputType="textPersonName"
         android:minHeight="48dp"
-        android:paddingLeft="20dp"
+        android:paddingStart="20dp"
         android:paddingTop="10dp"
-        android:paddingRight="10dp"
+        android:paddingEnd="10dp"
         android:paddingBottom="10dp"
         android:textColorHint="@color/white"
         app:layout_constraintEnd_toEndOf="@+id/inputUsernameLogin"
         app:layout_constraintStart_toStartOf="@+id/inputUsernameLogin"
-        app:layout_constraintTop_toBottomOf="@+id/inputUsernameLogin" />
+        app:layout_constraintTop_toBottomOf="@+id/inputUsernameLogin"
+        android:autofillHints="" />
 
     <TextView
         android:id="@+id/forgotPasswordLogin"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="76dp"
-        android:text="Forgot Password ?"
+        android:text="@string/forgot_password"
         android:textColor="@color/white"
         app:layout_constraintEnd_toEndOf="@+id/inputUsernameLogin"
         app:layout_constraintHorizontal_bias="0.969"
         app:layout_constraintStart_toStartOf="@+id/inputUsernameLogin"
         app:layout_constraintTop_toBottomOf="@+id/inputUsernameLogin" />
 
-    <androidx.appcompat.widget.AppCompatButton
-        android:id="@+id/brnLogin"
+    <Button
+        android:id="@+id/btnLogin"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginTop="16dp"
         android:background="@drawable/btn_bg"
         android:backgroundTint="@color/white"
-        android:text="Login"
+        android:text="@string/loginbutton"
         app:layout_constraintEnd_toEndOf="@+id/inputUsernameLogin"
         app:layout_constraintStart_toStartOf="@+id/inputUsernameLogin"
         app:layout_constraintTop_toBottomOf="@+id/forgotPasswordLogin"
-        tools:ignore="MissingConstraints" />
+        tools:ignore="MissingConstraints,DuplicateSpeakableTextCheck" />
 
     <LinearLayout
         android:id="@+id/linearLayout"
@@ -122,15 +124,13 @@
         android:gravity="center"
         android:orientation="horizontal"
         android:textAlignment="center"
-        app:layout_constraintEnd_toEndOf="@+id/brnLogin"
-        app:layout_constraintHorizontal_bias="0.0"
-        app:layout_constraintStart_toStartOf="@+id/brnLogin"
-        app:layout_constraintTop_toBottomOf="@+id/brnLogin">
+        app:layout_constraintEnd_toEndOf="@+id/btnLogin"
+        app:layout_constraintTop_toBottomOf="@+id/btnLogin">
 
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Don't have an Account?"
+            android:text="@string/account"
             android:textColor="@color/white" />
 
 
@@ -138,7 +138,7 @@
             android:id="@+id/textViewSignUp"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text=" SignUp"
+            android:text="@string/signup"
             android:textColor="@color/red" />
     </LinearLayout>
 
