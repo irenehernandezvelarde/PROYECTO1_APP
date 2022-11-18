@@ -26,7 +26,7 @@ import java.util.HashMap;
 
 public class Client {
     int port = 8888;
-    String location = "10.0.2.2";
+    String location = "24.01.17";
     String uri = "ws://" + location + ":" + port;
     WebSocketClient client;
     HashMap<String, String> users;
