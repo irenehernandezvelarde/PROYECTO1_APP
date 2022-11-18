@@ -3,6 +3,7 @@ package com.example.project;
 import static androidx.core.content.ContextCompat.startActivity;
 
 import android.app.Activity;
+import android.app.AlertDialog;
 import android.content.Context;
 import android.content.Intent;
 import android.util.Log;
@@ -59,6 +60,13 @@ public class Client {
                 public void onClose(int code, String reason, boolean remote) {
                     if (act instanceof ComponentesActivity) {
                         ((ComponentesActivity) act).comprobarConexion();
+                        //AlertDialog.Builder builder = new AlertDialog.Builder(this);
+                        //builder.setTitle("ERROR");
+                        //builder.setMessage("La conexión con el servidor a fallado");
+                        //builder.setPositiveButton("Aceptar", null);
+
+                        //AlertDialog dialog = builder.create();
+                        //dialog.show();
                     }
                 }
 

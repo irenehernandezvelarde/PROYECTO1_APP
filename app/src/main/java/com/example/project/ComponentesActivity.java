@@ -5,6 +5,8 @@ import static androidx.core.content.ContextCompat.startActivity;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.annotation.SuppressLint;
+import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
@@ -30,7 +32,9 @@ public class ComponentesActivity extends AppCompatActivity {
     }
     public void comprobarConexion(){
         startActivity(new Intent(ComponentesActivity.this, LoginActivity.class));
+
     }
+
     public void desconectar(){
         socket.desconecta();
         startActivity(new Intent(ComponentesActivity.this, LoginActivity.class));
