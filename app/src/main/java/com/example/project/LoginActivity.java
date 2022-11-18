@@ -12,9 +12,9 @@ import android.widget.Toast;
 
 public class LoginActivity extends AppCompatActivity {
     int port = 8888;
-    String location = "24.01.17";
+    String location = "10.0.2.2";
     String uri = "ws://" + location + ":" + port;
-    Client socket = new Client();
+    static Client socket = new Client();
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -24,6 +24,7 @@ public class LoginActivity extends AppCompatActivity {
         final EditText user = findViewById(R.id.inputUsernameLogin);
         final EditText password = findViewById(R.id.inputPasswordLogin);
         TextView btn = findViewById(R.id.textViewSignUp);
+        Client.act = LoginActivity.this;
 
         loginButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -45,6 +46,7 @@ public class LoginActivity extends AppCompatActivity {
         btn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                ComponentesActivity.socket = LoginActivity.socket;
                 startActivity(new Intent(LoginActivity.this,RegisterActivity.class));
             }
         });

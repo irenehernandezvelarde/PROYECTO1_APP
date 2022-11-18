@@ -12,24 +12,27 @@ import android.widget.Button;
 import android.widget.TextView;
 
 public class ComponentesActivity extends AppCompatActivity {
+    static Client socket;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_componentes);
-        Client socket = new Client(ComponentesActivity.this);
+        Client.act = ComponentesActivity.this;
 
         TextView btn = findViewById(R.id.btnLogout);
         btn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                socket.desconecta();
-                startActivity(new Intent(ComponentesActivity.this, LoginActivity.class));
-
+                desconectar();
             }
         });
     }
     public void comprobarConexion(){
+        startActivity(new Intent(ComponentesActivity.this, LoginActivity.class));
+    }
+    public void desconectar(){
+        socket.desconecta();
         startActivity(new Intent(ComponentesActivity.this, LoginActivity.class));
     }
 }

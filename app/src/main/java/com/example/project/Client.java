@@ -26,19 +26,13 @@ import java.util.HashMap;
 
 public class Client {
     int port = 8888;
-    String location = "24.01.17";
+    String location = "10.0.2.2";
     String uri = "ws://" + location + ":" + port;
     WebSocketClient client;
     HashMap<String, String> users;
     File file;
-    ComponentesActivity act;
+    static Activity act;
 
-    public Client() {
-
-    }
-    public Client(ComponentesActivity act) {
-        this.act = act;
-    }
 
     public void connecta() {
         try {
@@ -63,8 +57,9 @@ public class Client {
 
                 @Override
                 public void onClose(int code, String reason, boolean remote) {
-                    System.out.println("Disconnected from: " + getURI());
-                    act.comprobarConexion();
+                    if (act instanceof ComponentesActivity) {
+                        ((ComponentesActivity) act).comprobarConexion();
+                    }
                 }
 
                 @Override
