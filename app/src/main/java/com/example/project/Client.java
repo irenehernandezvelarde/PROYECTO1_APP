@@ -4,6 +4,7 @@ import static androidx.core.content.ContextCompat.startActivity;
 
 import android.app.Activity;
 import android.app.AlertDialog;
+import android.app.Dialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -60,21 +61,10 @@ public class Client {
 
                 @Override
                 public void onClose(int code, String reason, boolean remote) {
+
                     if (act instanceof ComponentesActivity) {
                         ((ComponentesActivity) act).comprobarConexion();
-                        AlertDialog.Builder builder1 = new AlertDialog.Builder((LoginActivity) act);
-                        builder1.setMessage("Write your message here.");
-                        builder1.setCancelable(true);
 
-                        builder1.setPositiveButton(
-                                "Yes",
-                                new DialogInterface.OnClickListener() {
-                                    public void onClick(DialogInterface dialog, int id) {
-                                        dialog.cancel();
-                                    }
-                                });
-                        AlertDialog alert11 = builder1.create();
-                        alert11.show();
                     }
                 }
 
