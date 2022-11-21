@@ -38,8 +38,8 @@ public class ComponentesActivity extends AppCompatActivity {
         runOnUiThread(new Runnable() {
             public void run() {
                 AlertDialog.Builder builder = new AlertDialog.Builder(Client.act);
-                builder.setTitle("ERROR");
-                builder.setMessage("Ha habido un error con la conexión del Servidor");
+                builder.setTitle("Connection error");
+                builder.setMessage("There has been an error with the Server connection, please try again later, we are working on it.\nThank you!");
                 builder.setPositiveButton("Ok", new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog, int whichButton) {
                         startActivity(new Intent(ComponentesActivity.this, LoginActivity.class));

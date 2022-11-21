@@ -55,7 +55,7 @@
         android:drawableLeft="@drawable/ic_baseline_fingerprint_24"
         android:drawablePadding="10dp"
         android:ems="10"
-        android:hint="Enter ID..."
+        android:hint="10.0.2.2"
         android:inputType="textPersonName"
         android:minHeight="48dp"
         android:paddingLeft="20dp"
