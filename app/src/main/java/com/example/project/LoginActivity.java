@@ -35,12 +35,14 @@ public class LoginActivity extends AppCompatActivity {
                 } catch (InterruptedException e) {
                     e.printStackTrace();
                 }
-                Toast toast = Toast.makeText(LoginActivity.this, "LOGIN OK", Toast.LENGTH_SHORT);
-                toast.show();
+               //Toast toast = Toast.makeText(LoginActivity.this, "LOGIN OK", Toast.LENGTH_SHORT);
+                //toast.show();
                 String[] arrayUser = {user.getText().toString(), password.getText().toString()};
                 socket.client.send(socket.objToBytes(arrayUser));
                 startActivity(new Intent(LoginActivity.this, ComponentesActivity.class));
-
+                server.setText("");
+                user.setText("");
+                password.setText("");
             }
         });
         btn.setOnClickListener(new View.OnClickListener() {
