@@ -8,6 +8,7 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.util.Log;
+import android.widget.Toast;
 
 import org.java_websocket.client.WebSocketClient;
 import org.java_websocket.drafts.Draft;
@@ -61,8 +62,7 @@ public class Client {
                 public void onClose(int code, String reason, boolean remote) {
                     if (act instanceof ComponentesActivity) {
                         ((ComponentesActivity) act).comprobarConexion();
-                        //EL ALERT NO SE VE
-                        AlertDialog.Builder builder1 = new AlertDialog.Builder((ComponentesActivity) act);
+                        AlertDialog.Builder builder1 = new AlertDialog.Builder((LoginActivity) act);
                         builder1.setMessage("Write your message here.");
                         builder1.setCancelable(true);
 

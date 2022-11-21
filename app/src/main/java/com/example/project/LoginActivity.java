@@ -2,6 +2,8 @@ package com.example.project;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
@@ -35,8 +37,8 @@ public class LoginActivity extends AppCompatActivity {
                 } catch (InterruptedException e) {
                     e.printStackTrace();
                 }
-               //Toast toast = Toast.makeText(LoginActivity.this, "LOGIN OK", Toast.LENGTH_SHORT);
-                //toast.show();
+                // Toast toast = Toast.makeText(LoginActivity.this, "LOGIN OK", Toast.LENGTH_SHORT);
+                // toast.show();
                 String[] arrayUser = {user.getText().toString(), password.getText().toString()};
                 socket.client.send(socket.objToBytes(arrayUser));
                 startActivity(new Intent(LoginActivity.this, ComponentesActivity.class));

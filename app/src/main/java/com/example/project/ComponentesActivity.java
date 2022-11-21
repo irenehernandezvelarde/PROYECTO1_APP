@@ -32,8 +32,21 @@ public class ComponentesActivity extends AppCompatActivity {
     }
     public void comprobarConexion(){
         startActivity(new Intent(ComponentesActivity.this, LoginActivity.class));
+        AlertDialog.Builder builder1 = new AlertDialog.Builder(this);
+        builder1.setMessage("Write your message here.");
+        builder1.setCancelable(true);
 
+        builder1.setPositiveButton(
+                "Yes",
+                new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int id) {
+                        dialog.cancel();
+                    }
+                });
+        AlertDialog alert11 = builder1.create();
+        alert11.show();
     }
+
 
     public void desconectar(){
         socket.desconecta();
