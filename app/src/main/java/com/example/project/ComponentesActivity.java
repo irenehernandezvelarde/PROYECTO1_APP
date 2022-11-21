@@ -48,7 +48,6 @@ public class ComponentesActivity extends AppCompatActivity {
                 builder.show();
             }
         });
-
     }
 
     public void desconectar(){
