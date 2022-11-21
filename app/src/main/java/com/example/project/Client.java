@@ -42,6 +42,7 @@ public class Client {
         try {
             System.out.println("connecting");
             client = new WebSocketClient(new URI(uri), (Draft) new Draft_6455()) {
+
                 @Override
                 public void onMessage(ByteBuffer message) {
                     Object obj = bytesToObject(message);
@@ -52,26 +53,27 @@ public class Client {
                 }
 
                 public void onMessage(String message) {
+
+                    if (message.split("/")[0].contentEquals("model")) {
+                        Log.i("RECIEVED", message);
+                    }
+
                 }
 
-                @Override
-                public void onOpen(ServerHandshake handshake) {
+                @Override public void onOpen(ServerHandshake handshake) {
                     System.out.println("Connected to: " + getURI());
                 }
 
-                @Override
-                public void onClose(int code, String reason, boolean remote) {
-
+                @Override public void onClose(int code, String reason, boolean remote) {
                     if (act instanceof ComponentesActivity) {
                         ((ComponentesActivity) act).comprobarConexion();
-
                     }
                 }
 
-                @Override
-                public void onError(Exception ex) {
+                @Override public void onError(Exception ex) {
                     ex.printStackTrace();
                 }
+
             };
             client.connect();
 
@@ -80,6 +82,7 @@ public class Client {
             System.out.println("Error: " + uri + " no és una direcció URI de WebSocket vàlida");
         }
     }
+
     public void desconecta() {
         client.close();
     }
@@ -93,7 +96,6 @@ public class Client {
         }
         return file;
     }
-
 
     public static Object bytesToObject(ByteBuffer arr) {
         Object result = null;
