@@ -29,6 +29,7 @@ public class LoginActivity extends AppCompatActivity {
         Client.act = LoginActivity.this;
         loginButton.setOnClickListener(new View.OnClickListener() {
             @Override
+
             public void onClick(View view) {
                 socket.connecta();
                 try {
@@ -36,11 +37,14 @@ public class LoginActivity extends AppCompatActivity {
                 } catch (InterruptedException e) {
                     e.printStackTrace();
                 }
-                // Toast toast = Toast.makeText(LoginActivity.this, "LOGIN OK", Toast.LENGTH_SHORT);
-                // toast.show();
-                String[] arrayUser = {user.getText().toString(), password.getText().toString()};
-                socket.client.send(socket.objToBytes(arrayUser));
+
+                String[] usersArray = {user.getText().toString(), password.getText().toString()};
+                socket.client.send(socket.objToBytes(usersArray));
+
                 startActivity(new Intent(LoginActivity.this, ComponentesActivity.class));
+                Toast toast = Toast.makeText(LoginActivity.this, "LOGIN CORRECTO", Toast.LENGTH_SHORT);
+                toast.show();
+
                 server.setText("");
                 user.setText("");
                 password.setText("");
@@ -54,19 +58,5 @@ public class LoginActivity extends AppCompatActivity {
             }
         });
     }
-    public void alerta(){
-        AlertDialog.Builder builder1 = new AlertDialog.Builder(this);
-        builder1.setMessage("Write your message here.");
-        builder1.setCancelable(true);
 
-        builder1.setPositiveButton(
-                "Yes",
-                new DialogInterface.OnClickListener() {
-                    public void onClick(DialogInterface dialog, int id) {
-                        dialog.cancel();
-                    }
-                });
-        AlertDialog alert11 = builder1.create();
-        alert11.show();
-    }
 }

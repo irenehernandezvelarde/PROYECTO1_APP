@@ -52,6 +52,7 @@ public class Client {
                     }
                 }
 
+
                 public void onMessage(String message) {
 
                     if (message.split("/")[0].contentEquals("model")) {
