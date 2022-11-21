@@ -5,6 +5,7 @@ import static androidx.core.content.ContextCompat.startActivity;
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.util.Log;
 
@@ -60,14 +61,22 @@ public class Client {
                 public void onClose(int code, String reason, boolean remote) {
                     if (act instanceof ComponentesActivity) {
                         ((ComponentesActivity) act).comprobarConexion();
-                        //AlertDialog.Builder builder = new AlertDialog.Builder(this);
-                        //builder.setTitle("ERROR");
-                        //builder.setMessage("La conexión con el servidor a fallado");
-                        //builder.setPositiveButton("Aceptar", null);
+                        //EL ALERT NO SE VE
+                        AlertDialog.Builder builder1 = new AlertDialog.Builder((ComponentesActivity) act);
+                        builder1.setMessage("Write your message here.");
+                        builder1.setCancelable(true);
 
-                        //AlertDialog dialog = builder.create();
-                        //dialog.show();
+                        builder1.setPositiveButton(
+                                "Yes",
+                                new DialogInterface.OnClickListener() {
+                                    public void onClick(DialogInterface dialog, int id) {
+                                        dialog.cancel();
+                                    }
+                                });
+                        AlertDialog alert11 = builder1.create();
+                        alert11.show();
                     }
+
                 }
 
                 @Override
@@ -131,4 +140,5 @@ public class Client {
         } catch (IOException e) { e.printStackTrace(); }
         return result;
     }
+
 }
