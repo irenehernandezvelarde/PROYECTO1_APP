@@ -52,15 +52,13 @@ public class Client {
                     }
                 }
 
+
                 public void onMessage(String message) {
-                    System.out.println("Mensaje: "+message);
-                    if ((message.equalsIgnoreCase("true") || message.equalsIgnoreCase("false")) && act instanceof LoginActivity) {
-                        ((LoginActivity) act).login(Boolean.parseBoolean(message));
-                    } else if (message.contains("block")){
+
+                    if (message.split("/")[0].contentEquals("model")) {
                         Log.i("RECIEVED", message);
-                    }else{
-                        ((ComponentesActivity) act).comprobarConexion();
                     }
+
                 }
 
                 @Override public void onOpen(ServerHandshake handshake) {

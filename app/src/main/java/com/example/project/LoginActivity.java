@@ -6,7 +6,6 @@ import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -43,13 +42,12 @@ public class LoginActivity extends AppCompatActivity {
                 socket.client.send(socket.objToBytes(usersArray));
 
                 startActivity(new Intent(LoginActivity.this, ComponentesActivity.class));
-                server.setText("");
-                user.setText("");
-                password.setText("");
-
                 Toast toast = Toast.makeText(LoginActivity.this, "LOGIN CORRECTO", Toast.LENGTH_SHORT);
                 toast.show();
 
+                server.setText("");
+                user.setText("");
+                password.setText("");
             }
         });
         btn.setOnClickListener(new View.OnClickListener() {
@@ -59,28 +57,6 @@ public class LoginActivity extends AppCompatActivity {
                 startActivity(new Intent(LoginActivity.this,RegisterActivity.class));
             }
         });
-    }
-    public void login(boolean isCorrect) {
-        if (isCorrect) {
-            socket.client.send("getModel");
-            ComponentesActivity.socket = LoginActivity.socket;
-            Intent intent = new Intent(LoginActivity.this, ComponentesActivity.class);
-            startActivity(intent);
-        } else {
-            runOnUiThread(new Runnable() {
-                public void run() {
-                    AlertDialog.Builder builder = new AlertDialog.Builder(Client.act);
-                    builder.setTitle("Connection error");
-                    builder.setMessage("There has been an error with the Server connection, please try again later, we are working on it.\nThank you!");
-                    builder.setPositiveButton("Ok", new DialogInterface.OnClickListener() {
-                        public void onClick(DialogInterface dialog, int whichButton) {
-                            Log.i("hola","deu");
-                        }
-                    });
-                    builder.show();
-                }
-            });
-        }
     }
 
 }
