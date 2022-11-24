@@ -65,6 +65,14 @@ public class Client {
                     }else{
                         System.out.println("MAAAL2 ESTÁ ENTRANDO EN EL ELSE");
                         ((LoginActivity)act).login(false);
+
+                    String key = message.split("/")[0];
+                    String content = message.split("/")[1];
+
+                    if (key == "model"){
+                        for (String a : content.split("#")){
+                            Log.i("Recieved",a);
+                        }
                     }
                 }
 
