@@ -42,7 +42,6 @@ public class Client {
         try {
             System.out.println("connecting");
             client = new WebSocketClient(new URI(uri), (Draft) new Draft_6455()) {
-
                 @Override
                 public void onMessage(ByteBuffer message) {
                     Object obj = bytesToObject(message);
@@ -52,13 +51,21 @@ public class Client {
                     }
                 }
 
-
                 public void onMessage(String message) {
-
-                    if (message.split("/")[0].contentEquals("model")) {
-                        Log.i("RECIEVED", message);
+                    System.out.println("Mensaje: " + message);
+                    if (message.equalsIgnoreCase("true")){
+                        System.out.println("ENTRA EN TRUE");
+                        ((LoginActivity)act).login(true);
+                    } else if(message.equalsIgnoreCase("false")){
+                        System.out.println("ENTRA EN FALSE");
+                        ((LoginActivity)act).login(false);
+                    } else if (message.contains("block")){
+                        System.out.println("ESTA EN BLOCK");
+                        LoginActivity.loadModel(message);
+                    }else{
+                        System.out.println("MAAAL2 ESTÁ ENTRANDO EN EL ELSE");
+                        ((LoginActivity)act).login(false);
                     }
-
                 }
 
                 @Override public void onOpen(ServerHandshake handshake) {
@@ -66,12 +73,12 @@ public class Client {
                 }
 
                 @Override public void onClose(int code, String reason, boolean remote) {
-                    if (act instanceof ComponentesActivity) {
+                    if (act instanceof ComponentesActivity && ((ComponentesActivity) act).logout == false) {
                         ((ComponentesActivity) act).comprobarConexion();
                     }
                 }
-
-                @Override public void onError(Exception ex) {
+                @Override public void onError(Exception ex)
+                {
                     ex.printStackTrace();
                 }
 

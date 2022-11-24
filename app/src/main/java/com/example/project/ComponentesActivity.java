@@ -19,6 +19,8 @@ import android.widget.Toast;
 
 public class ComponentesActivity extends AppCompatActivity {
     static Client socket;
+    static Modelo modelo;
+    boolean logout = false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -30,6 +32,7 @@ public class ComponentesActivity extends AppCompatActivity {
         btn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                logout = true;
                 desconectar();
             }
         });
@@ -51,7 +54,9 @@ public class ComponentesActivity extends AppCompatActivity {
     }
 
     public void desconectar(){
+
         socket.desconecta();
         startActivity(new Intent(ComponentesActivity.this, LoginActivity.class));
+
     }
 }
