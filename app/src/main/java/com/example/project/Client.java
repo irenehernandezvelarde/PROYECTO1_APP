@@ -54,9 +54,13 @@ public class Client {
 
 
                 public void onMessage(String message) {
+                    String key = message.split("/")[0];
+                    String content = message.split("/")[1];
 
-                    if (message.split("/")[0].contentEquals("model")) {
-                        Log.i("RECIEVED", message);
+                    if (key == "model"){
+                        for (String a : content.split("#")){
+                            Log.i("Recieved",a);
+                        }
                     }
 
                 }
