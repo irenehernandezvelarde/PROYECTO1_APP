@@ -17,13 +17,14 @@ import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import java.util.ArrayList;
+
 public class ComponentesActivity extends AppCompatActivity {
     static Client socket;
-    static Modelo modelo;
+    static ArrayList<Block> modelo;
     boolean logout = false;
 
-    @Override
-    protected void onCreate(Bundle savedInstanceState) {
+    @Override protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_componentes);
         Client.act = ComponentesActivity.this;
@@ -37,6 +38,7 @@ public class ComponentesActivity extends AppCompatActivity {
             }
         });
     }
+
     public void comprobarConexion(){
         runOnUiThread(new Runnable() {
             public void run() {
@@ -54,9 +56,7 @@ public class ComponentesActivity extends AppCompatActivity {
     }
 
     public void desconectar(){
-
         socket.desconecta();
         startActivity(new Intent(ComponentesActivity.this, LoginActivity.class));
-
     }
 }

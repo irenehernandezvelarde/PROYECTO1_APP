@@ -42,7 +42,7 @@ public class Client {
         try {
             System.out.println("connecting");
             client = new WebSocketClient(new URI(uri), (Draft) new Draft_6455()) {
-                @Override
+
                 public void onMessage(ByteBuffer message) {
                     Object obj = bytesToObject(message);
                     String[] user = (String[]) obj;
@@ -52,36 +52,39 @@ public class Client {
                 }
 
                 public void onMessage(String message) {
+
                     System.out.println("Mensaje: " + message);
-                    if (message.equalsIgnoreCase("true")){
-                        System.out.println("ENTRA EN TRUE");
-                        ((LoginActivity)act).login(true);
-                    } else if(message.equalsIgnoreCase("false")){
-                        System.out.println("ENTRA EN FALSE");
-                        ((LoginActivity)act).login(false);
-                    } else if (message.contains("block")){
-                        System.out.println("ESTA EN BLOCK");
-                        LoginActivity.loadModel(message);
-                    }else{
-                        System.out.println("MAAAL2 ESTÁ ENTRANDO EN EL ELSE");
-                        ((LoginActivity)act).login(false);
+                    String key = message.split("/")[0];
+                    String value = message.split("/")[1];
+
+                    if (key.contentEquals("passwordCheck")) {
+                        if (value.contentEquals("true")) {
+                            System.out.println("ENTRA EN TRUE");
+                            ((LoginActivity) act).login(true);
+                        } else {
+                            System.out.println("ENTRA EN FALSE");
+                            ((LoginActivity) act).login(false);
+                        }
+                    }
+                    if (key.contentEquals("model")) {
+                        Log.i("MODEL_STRING", value);
+                        ComponentesActivity.modelo = new Modelo(value);
                     }
                 }
 
-                @Override public void onOpen(ServerHandshake handshake) {
+                @Override public void onOpen(ServerHandshake handshake){
                     System.out.println("Connected to: " + getURI());
                 }
 
-                @Override public void onClose(int code, String reason, boolean remote) {
+                @Override public void onClose ( int code, String reason,boolean remote){
                     if (act instanceof ComponentesActivity && ((ComponentesActivity) act).logout == false) {
                         ((ComponentesActivity) act).comprobarConexion();
                     }
                 }
-                @Override public void onError(Exception ex)
-                {
+
+                @Override public void onError (Exception ex) {
                     ex.printStackTrace();
                 }
-
             };
             client.connect();
 

@@ -79,7 +79,7 @@ public class LoginActivity extends AppCompatActivity {
     public static void loadModel(String s) {
 
         System.out.println("Cargando modelo desde el string: ");
-        ComponentesActivity.modelo = new Modelo();
+        ComponentesActivity.modelo = new Modelo(s);
         System.out.println("Modelo cargado");
     }
 
