@@ -4,24 +4,17 @@ import static androidx.core.content.ContextCompat.startActivity;
 
 import androidx.appcompat.app.AppCompatActivity;
 
-import android.annotation.SuppressLint;
 import android.app.AlertDialog;
-import android.app.Dialog;
-import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
-import android.widget.Button;
 import android.widget.TextView;
-import android.widget.Toast;
-
-import java.util.ArrayList;
 
 public class ComponentesActivity extends AppCompatActivity {
     static Client socket;
-    static ArrayList<Block> modelo;
+    static Modelo modelo;
     boolean logout = false;
 
     @Override protected void onCreate(Bundle savedInstanceState) {
@@ -37,9 +30,14 @@ public class ComponentesActivity extends AppCompatActivity {
                 desconectar();
             }
         });
+
+        for (Block block : modelo.model){
+            Log.i("PAINTING",block.getName());
+            //GUI FORMING
+        }
     }
 
-    public void comprobarConexion(){
+    public void connectionClosedMessage(){ //comprobarConexion
         runOnUiThread(new Runnable() {
             public void run() {
                 AlertDialog.Builder builder = new AlertDialog.Builder(Client.act);

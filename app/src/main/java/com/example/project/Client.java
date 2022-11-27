@@ -29,21 +29,24 @@ import java.nio.ByteBuffer;
 import java.util.HashMap;
 
 public class Client {
+    //VARIABLES
+    //Connection
     int port = 8888;
     String location = "10.0.2.2";
     String uri = "ws://" + location + ":" + port;
     WebSocketClient client;
+    //Credential validation
     HashMap<String, String> users;
+    //Other
     File file;
     static Activity act;
 
-
     public void connecta() {
         try {
-            System.out.println("connecting");
+            Log.i("WEB_CLIENT","Connecting");
             client = new WebSocketClient(new URI(uri), (Draft) new Draft_6455()) {
 
-                public void onMessage(ByteBuffer message) {
+                @Override public void onMessage(ByteBuffer message) {
                     Object obj = bytesToObject(message);
                     String[] user = (String[]) obj;
                     for (String s : user) {
@@ -51,12 +54,13 @@ public class Client {
                     }
                 }
 
-                public void onMessage(String message) {
-
+                @Override public void onMessage(String message) {
+                    //SPLIT KEY/VALUE
                     System.out.println("Mensaje: " + message);
                     String key = message.split("/")[0];
                     String value = message.split("/")[1];
 
+                    //USER CREDENTIALS CHECKING
                     if (key.contentEquals("passwordCheck")) {
                         if (value.contentEquals("true")) {
                             System.out.println("ENTRA EN TRUE");
@@ -66,9 +70,11 @@ public class Client {
                             ((LoginActivity) act).login(false);
                         }
                     }
+
+                    //MODEL SYNC
                     if (key.contentEquals("model")) {
                         Log.i("MODEL_STRING", value);
-                        ComponentesActivity.modelo = new Modelo(value);
+                        new Modelo(value);
                     }
                 }
 
@@ -77,14 +83,13 @@ public class Client {
                 }
 
                 @Override public void onClose ( int code, String reason,boolean remote){
-                    if (act instanceof ComponentesActivity && ((ComponentesActivity) act).logout == false) {
-                        ((ComponentesActivity) act).comprobarConexion();
+                    if (act instanceof ComponentesActivity && !((ComponentesActivity)act).logout) {
+                        ((ComponentesActivity) act).connectionClosedMessage();
                     }
                 }
 
-                @Override public void onError (Exception ex) {
-                    ex.printStackTrace();
-                }
+                @Override public void onError (Exception ex) {ex.printStackTrace();}
+
             };
             client.connect();
 
@@ -96,16 +101,6 @@ public class Client {
 
     public void desconecta() {
         client.close();
-    }
-
-    public File getModel() {
-        client.send("getModel");
-        try {
-            Thread.sleep(100);
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-        }
-        return file;
     }
 
     public static Object bytesToObject(ByteBuffer arr) {
@@ -120,13 +115,9 @@ public class Client {
             ObjectInputStream is = new ObjectInputStream(in);
             return is.readObject();
 
-        } catch (ClassNotFoundException e) {
-            e.printStackTrace();
-        } catch (UnsupportedEncodingException e) {
-            e.printStackTrace();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
+        } catch (ClassNotFoundException e) {e.printStackTrace();
+        } catch (UnsupportedEncodingException e) { e.printStackTrace();
+        } catch (IOException e) {e.printStackTrace();}
         return result;
     }
 
@@ -142,4 +133,15 @@ public class Client {
         } catch (IOException e) { e.printStackTrace(); }
         return result;
     }
+
+    public File getModel() {
+        client.send("getModel");
+        try {
+            Thread.sleep(100);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+        return file;
+    }
+
 }

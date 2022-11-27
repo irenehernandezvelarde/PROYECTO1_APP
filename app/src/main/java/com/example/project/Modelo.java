@@ -6,20 +6,21 @@ import com.google.android.material.slider.Slider;
 import java.util.ArrayList;
 
 public class Modelo {
+    public static ArrayList<Block> model;
 
     public Modelo(String modelString){
         parseModel(modelString);
     }
 
     public void parseModel(String modelString){
-        ArrayList<Block> model = new ArrayList<Block>();
+        model = new ArrayList<Block>();
         String[] blocks = modelString.split("#");
         for (String block : blocks){
             if (block.isEmpty()){break;}
             //CREACIO BLOCK
             String blockParams = block.split(";")[0];
             Block newBlock = new Block();
-            newBlock.setName(block.split("=")[1].split(":")[1]);
+            newBlock.setName(blockParams.split("=")[1].split(":")[1]);
             //CREACIO COMPONENTS
             String[] blockComponentsList = block.split(";")[1].split("!");
             for (String component : blockComponentsList){
@@ -28,7 +29,7 @@ public class Modelo {
                 String[] componentParams = component.split("=")[1].split(",");
                 switch (componentType){
                     case "switch":
-                        CSwitch newSwitch = new CSwitch(null);
+                        CSwitch newSwitch = new CSwitch();
                         for (String param : componentParams){
                             if (param.isEmpty()){break;}
                             String pName = param.split(":")[0];
@@ -42,20 +43,20 @@ public class Modelo {
                                     break;
                                 case "value":
                                     if (pValue.contentEquals("true")){
-                                        newSwitch.setSelected(true);
+                                        newSwitch.setValue(true);
                                     } else {
-                                        newSwitch.setSelected(false);
+                                        newSwitch.setValue(false);
                                     }
                                     break;
                                 default:
-                                    Log.i("PARSER_ERROR","Unknown parameter "+ param + "for component type" + componentType);
+                                    Log.i("PARSER_ERROR","Unknown parameter ("+ pName + ") for component type " + componentType);
                                     break;
                             }
                         }
                         newBlock.add(newSwitch);
                         break;
                     case "slider":
-                        CSlider newSlider = new CSlider(null);
+                        CSlider newSlider = new CSlider();
                         for (String param : componentParams){
                             if (param.isEmpty()){break;}
                             String pName = param.split(":")[0];
@@ -68,13 +69,13 @@ public class Modelo {
                                     newSlider.setTitle(pValue);
                                     break;
                                 case "min":
-                                    newSlider.setValueFrom(Integer.parseInt(pValue));
+                                    newSlider.setMin(Integer.parseInt(pValue));
                                     break;
                                 case "max":
-                                    newSlider.setValueTo(Integer.parseInt(pValue));
+                                    newSlider.setMax(Integer.parseInt(pValue));
                                     break;
                                 case "step":
-                                    newSlider.setStepSize(Integer.parseInt(pValue));
+                                    newSlider.setStep(Integer.parseInt(pValue));
                                     break;
                                 case "conversionFactor":
                                     newSlider.setConversionFactor(Integer.parseInt(pValue));
@@ -83,14 +84,14 @@ public class Modelo {
                                     newSlider.setValue(Integer.parseInt(pValue));
                                     break;
                                 default:
-                                    Log.i("PARSER_ERROR","Unknown parameter "+ param + "for component type" + componentType);
+                                    Log.i("PARSER_ERROR","Unknown parameter ("+ pName + ") for component type " + componentType);
                                     break;
                             }
                         }
                         newBlock.add(newSlider);
                         break;
                     case "dropdown":
-                        CDropdown newDropdown = new CDropdown(null);
+                        CDropdown newDropdown = new CDropdown();
                         for (String param : componentParams) {
                             if (param.isEmpty()){break;}
                             String pName = param.split(":")[0];
@@ -102,15 +103,45 @@ public class Modelo {
                                 case "title":
                                     newDropdown.setTitle(pValue);
                                     break;
+                                case "options": //UNIMPLEMENTED
+                                    String[] options = pValue.split("I");
+                                    for (String option : options){
+                                        if (option.isEmpty()){break;}
+                                        CDropdownOption newOption = new CDropdownOption();
+                                        String[] optionParams = option.split("-");
+                                        for (String optionParam : optionParams){
+                                            String opPaName = optionParam.split("_")[0];
+                                            String opPaValue = optionParam.split("_")[1];
+                                            switch (opPaName){
+                                                case "index":
+                                                    newOption.setIndex(Integer.valueOf(opPaValue));
+                                                    break;
+                                                case "id":
+                                                    newOption.setId(Integer.valueOf(opPaValue));
+                                                    break;
+                                                case "value":
+                                                    newOption.setValue(opPaValue);
+                                                    break;
+                                                default:
+                                                    Log.i("PARSER_ERROR","Unknown parameter for dropdown option ("+opPaName+")");
+                                                    break;
+                                            }
+                                        }
+                                        newDropdown.options.add(newOption);
+                                    }
+                                    break;
+                                case "value": //UNIMPLEMENTED
+                                    newDropdown.setValue(Integer.parseInt(pValue));
+                                    break;
                                 default:
-                                    Log.i("PARSER_ERROR","Unknown parameter "+ param + "for component type" + componentType);
+                                    Log.i("PARSER_ERROR","Unknown parameter ("+ pName + ") for component type " + componentType);
                                     break;
                             }
                         }
                         newBlock.add(newDropdown);
                         break;
                     case "sensor":
-                        CSensor newSensor = new CSensor(null);
+                        CSensor newSensor = new CSensor();
                         for (String param : componentParams) {
                             if (param.isEmpty()){break;}
                             String pName = param.split(":")[0];
@@ -133,8 +164,9 @@ public class Modelo {
                                     break;
                                 case "value":
                                     newSensor.setValue(Integer.parseInt(pValue));
+                                    break;
                                 default:
-                                    Log.i("PARSER_ERROR","Unknown parameter "+ param + "for component type" + componentType);
+                                    Log.i("PARSER_ERROR","Unknown parameter ("+ pName + ") for component type " + componentType);
                                     break;
                             }
                         }
@@ -148,7 +180,6 @@ public class Modelo {
             }
             model.add(newBlock);
         }
-        ComponentesActivity.modelo = model;
     }
 }
 
@@ -159,8 +190,7 @@ class Block extends ArrayList<Object>{
     public String getName() {return name;}
 }
 
-class CSwitch extends Switch {
-    public CSwitch(Context context) {super(context);}
+class CSwitch {
 
     private int id;
     public void setId(int id) {this.id = id;}
@@ -170,21 +200,14 @@ class CSwitch extends Switch {
     public void setTitle(String title) {this.title = title;}
     public String getTitle() {return title;}
 
-    public String toString() {return "switch="+"id:"+id+",title:"+getTitle()+",value:"+isSelected();}
+    private boolean value;
+    public void setValue(Boolean value) {this.value = value;}
+    public Boolean getValue() {return value;}
 
-    @Override
-    public void setSelected(boolean selected) {
-        super.setSelected(selected);
-        if (selected == true){
-            setText("ON");
-        } else {
-            setText("OFF");
-        }
-    }
+    public String toString() {return "switch="+"id:"+id+",title:"+title+",value:"+value;}
 }
 
-class CSlider extends Slider{
-    public CSlider(Context context) {super(context);}
+class CSlider{
 
     private int id;
     public void setId(int id) {this.id = id;}
@@ -193,16 +216,31 @@ class CSlider extends Slider{
     private String title;
     public void setTitle(String title) {this.title = title;}
     public String getTitle() {return title;}
+
+    private int min;
+    public void setMin(int min){this.min = min;}
+    public int getMin(){return min;}
+
+    private int max;
+    public void setMax(int max){this.max = max;}
+    public int getMax(){return max;}
+
+    private int step;
+    public void setStep(int step){this.step = step;}
+    public int getStep(){return step;}
+
+    private int value;
+    public void setValue(int value){this.value = value;}
+    public int getValue(){return value;}
 
     private int conversionFactor;
     public void setConversionFactor(int conversionFactor) {this.conversionFactor = conversionFactor;}
     public int getConversionFactor() {return conversionFactor;}
 
-    public String toString() {return "slider="+"id:"+id+",title:"+title+",min:"+getValueFrom()+",max:"+getValueTo()+",step:"+getStepSize()+",conversionFactor:"+conversionFactor+",value:"+getValue();}
+    public String toString() {return "slider="+"id:"+id+",title:"+title+",min:"+min+",max:"+max+",step:"+step+",conversionFactor:"+conversionFactor+",value:"+value;}
 }
 
-class CDropdown extends androidx.appcompat.widget.AppCompatSpinner {
-    public CDropdown(Context context) {super(context);}
+class CDropdown {
 
     int id;
     public int getId() {return id;}
@@ -211,10 +249,32 @@ class CDropdown extends androidx.appcompat.widget.AppCompatSpinner {
     String title;
     public String getTitle() {return title;}
     public void setTitle(String title) {this.title = title;}
+
+    int value;
+    public void setValue(int value){this.value = value;}
+    public int getValue(){return value;}
+
+    ArrayList<CDropdownOption> options = new ArrayList<CDropdownOption>();
+
 }
 
-class CSensor extends androidx.appcompat.widget.AppCompatTextView {
-    public CSensor(Context context) {super(context);}
+class CDropdownOption {
+
+    int id;
+    public void setId(int id){this.id = id;}
+    public int getId() {return id;}
+
+    int index;
+    public void setIndex(int index){this.index = index;}
+    public int getIndex() {return index;}
+
+    String value;
+    public void setValue(String value){this.value = value;}
+    public String getValue(){return value;}
+
+}
+
+class CSensor {
 
     private int id;
     public void setId(int id) {this.id = id;}

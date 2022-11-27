@@ -14,54 +14,78 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 public class LoginActivity extends AppCompatActivity {
+    //VARIABLES
+    //Web connection
     int port = 8888;
     String location = "10.0.2.2";
     String uri = "ws://" + location + ":" + port;
     static Client socket = new Client();
-    @Override
+
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
+
+        //GUI
         final Button loginButton = findViewById(R.id.btnLogin);
         final EditText server = findViewById(R.id.inputID);
         final EditText user = findViewById(R.id.inputUsernameLogin);
         final EditText password = findViewById(R.id.inputPasswordLogin);
-        TextView btn = findViewById(R.id.textViewSignUp);
+        TextView registerButton = findViewById(R.id.textViewSignUp);
         Client.act = LoginActivity.this;
+
+        //LOGIN
         loginButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-
-            public void onClick(View view) {
+            @Override public void onClick(View view) {
+                //SERVER CONNECTION
                 socket.connecta();
-                String[] arrayUser = {user.getText().toString(), password.getText().toString()};
-                try {
-                    Thread.sleep(500);
-                } catch (InterruptedException e) {
-                    e.printStackTrace();
+                //Waiting for connection to open (triga una mica)
+                try {Thread.sleep(2000);}
+                catch (InterruptedException e) {e.printStackTrace();}
+                if (socket.client.isOpen()) { //Si s'ha pogut conectar
+                    //CREDENTIAL CHECK
+                    String[] arrayUser = {user.getText().toString(), password.getText().toString()};
+                    try {Thread.sleep(500);
+                    } catch (InterruptedException e) {e.printStackTrace();}
+                    socket.client.send(Client.objToBytes(arrayUser));
+                    //CREDENTIAL FIELDS RESET
+                    server.setText("");
+                    user.setText("");
+                    password.setText("");
+                    //goes to login method to continue
+                } else { //Si no s'ha pogut conectar (mostra un popup)
+                    AlertDialog.Builder builder = new AlertDialog.Builder(Client.act);
+                    builder.setTitle("Connection error");
+                    builder.setMessage("Unable to connect to the server.\nMaybe server is not running?");
+                    builder.setPositiveButton("Ok", new DialogInterface.OnClickListener() {
+                        public void onClick(DialogInterface dialog, int whichButton) {}
+                    });
+                    builder.show();
                 }
-                socket.client.send(socket.objToBytes(arrayUser));
-
-                server.setText("");
-                user.setText("");
-                password.setText("");
             }
         });
 
-        btn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                ComponentesActivity.socket = LoginActivity.socket;
+        //REGISTER NEW ACCOUNT (NOT IMPLEMENTED)
+        registerButton.setOnClickListener(new View.OnClickListener() {
+            @Override public void onClick(View view) {
+                RegisterActivity.socket = LoginActivity.socket;
                 startActivity(new Intent(LoginActivity.this,RegisterActivity.class));
             }
         });
+
     }
-    public void login(boolean isCorrect) {
-        if (isCorrect) {
-            socket.client.send("getModel");
+
+    public void login(boolean correctCredentials) {
+        if (correctCredentials) {
+            //REQUEST MODEL TO SERVER
+                //socket.client.send("getModel");
+            //SYNC CONNECTION WITH COMPONENT ACTIVITY
             ComponentesActivity.socket = LoginActivity.socket;
+            //LAUNCH COMPONENT ACTIVITY
             Intent intent = new Intent(LoginActivity.this, ComponentesActivity.class);
             startActivity(intent);
-        } else {
+        }
+        else {
+            //LAUNCH INVALID CREDENTIALS ERROR
             runOnUiThread(new Runnable() {
                 public void run() {
                     AlertDialog.Builder builder = new AlertDialog.Builder(Client.act);
@@ -76,12 +100,5 @@ public class LoginActivity extends AppCompatActivity {
             });
         }
     }
-    public static void loadModel(String s) {
-
-        System.out.println("Cargando modelo desde el string: ");
-        ComponentesActivity.modelo = new Modelo(s);
-        System.out.println("Modelo cargado");
-    }
-
 
 }
