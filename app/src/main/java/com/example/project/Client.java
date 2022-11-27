@@ -37,9 +37,9 @@ public class Client {
     WebSocketClient client;
     //Credential validation
     HashMap<String, String> users;
-    //Other
-    File file;
+    //In between classes comunication
     static Activity act;
+    static ComponentesActivity actComponentes;
 
     public void connecta() {
         try {
@@ -55,7 +55,7 @@ public class Client {
                 }
 
                 @Override public void onMessage(String message) {
-                    //SPLIT KEY/VALUE
+                    //SPLIT KEY-VALUE
                     System.out.println("Mensaje: " + message);
                     String key = message.split("/")[0];
                     String value = message.split("/")[1];
@@ -74,8 +74,9 @@ public class Client {
                     //MODEL SYNC
                     if (key.contentEquals("model")) {
                         Log.i("MODEL_STRING", value);
-                        new Modelo(value);
+                        actComponentes.modelo = new Modelo(value);
                     }
+
                 }
 
                 @Override public void onOpen(ServerHandshake handshake){
@@ -99,9 +100,7 @@ public class Client {
         }
     }
 
-    public void desconecta() {
-        client.close();
-    }
+    public void desconecta() {client.close();}
 
     public static Object bytesToObject(ByteBuffer arr) {
         Object result = null;
@@ -132,16 +131,6 @@ public class Client {
             result = bos.toByteArray();
         } catch (IOException e) { e.printStackTrace(); }
         return result;
-    }
-
-    public File getModel() {
-        client.send("getModel");
-        try {
-            Thread.sleep(100);
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-        }
-        return file;
     }
 
 }

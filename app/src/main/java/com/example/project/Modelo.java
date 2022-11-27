@@ -6,7 +6,7 @@ import com.google.android.material.slider.Slider;
 import java.util.ArrayList;
 
 public class Modelo {
-    public static ArrayList<Block> model;
+    public ArrayList<Block> model;
 
     public Modelo(String modelString){
         parseModel(modelString);
@@ -42,6 +42,7 @@ public class Modelo {
                                     newSwitch.setTitle(pValue);
                                     break;
                                 case "value":
+                                    Log.i("SWITCH VALUE", pValue);
                                     if (pValue.contentEquals("true")){
                                         newSwitch.setValue(true);
                                     } else {

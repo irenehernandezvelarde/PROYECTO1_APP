@@ -21,13 +21,18 @@ import java.util.ArrayList;
 
 public class ComponentesActivity extends AppCompatActivity {
     static Client socket;
-    static Modelo modelo;
+    Modelo modelo;
     boolean logout = false;
 
     @Override protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_componentes);
-        Client.act = ComponentesActivity.this;
+        Client.act = this;
+
+        Client.actComponentes = this;
+        socket.client.send("getModel");
+        try {Thread.sleep(1000);} //Espera per a rebre i establir el model
+        catch (InterruptedException e) {e.printStackTrace();}
 
         //LOGOUT
         TextView btn = findViewById(R.id.btnLogout);
@@ -40,83 +45,7 @@ public class ComponentesActivity extends AppCompatActivity {
         });
 
         //GUI FORMING
-        for (Block block : modelo.model){//Per cada bloc
-
-            //Agafa la layout on posar els components
-            LinearLayout componentLayout = findViewById(R.id.componentsLayout);
-
-            //Crea bloc
-            CBlock nBlock = new CBlock(getApplicationContext());
-            nBlock.setOrientation(LinearLayout.VERTICAL);
-            nBlock.setName(block.getName());
-
-            for (Object object : block){//Per cada component del bloc
-                switch (object.getClass().toString()){
-                    //Switch
-                    case "class com.example.project.SSwitch":
-                        SSwitch switchData = (SSwitch) object;
-                        CSwitch newSwitch = new CSwitch(getApplicationContext());
-                        newSwitch.setId(switchData.getId());
-                        newSwitch.setTitle(switchData.getTitle());
-                        newSwitch.setSelected(switchData.getValue());
-                        newSwitch.setText("Switch:");
-                        nBlock.addView(newSwitch);
-                        break;
-                    //Slider
-                    /*
-                    case "class com.example.project.SSlider":
-                        SSlider sliderData = (SSlider) object;
-                        CSlider newSlider = new CSlider(getApplicationContext());
-                        newSlider.setId(sliderData.getId());
-                        newSlider.setTitle(sliderData.getTitle());
-                        newSlider.setValueFrom(sliderData.getMin());
-                        newSlider.setValueTo(sliderData.getMax());
-                        newSlider.setValue(sliderData.getValue());
-                        newSlider.setConversionFactor(sliderData.getConversionFactor());
-                        nBlock.addView(newSlider);
-                        break;
-                     */
-                    //Dropdown
-                    case "class com.example.project.SDropdown":
-                        SDropdown dropdownData = (SDropdown) object;
-                        CDropdown newDropdown = new CDropdown(getApplicationContext());
-                        newDropdown.setId(dropdownData.getId());
-                        newDropdown.setTitle(dropdownData.getTitle());
-
-                        //ADD OPTIONS HERE
-                        //create a list of items for the spinner.
-                        String[] items = new String[]{"1", "2", "three"};
-                        //create an adapter to describe how the items are displayed, adapters are used in several places in android.
-                        //There are multiple variations of this, but this is the basic variant.
-                        ArrayAdapter<String> adapter = new ArrayAdapter<>(this, android.R.layout.simple_spinner_dropdown_item, items);
-                        //set the spinners adapter to the previously created one.
-                        newDropdown.setAdapter(adapter);
-                        //OPTIONS ADDED UP
-
-                        //newDropdown.setSelection(dropdownData.getValue());
-                        nBlock.addView(newDropdown);
-                        break;
-                    //Sensor
-                    case "class com.example.project.SSensor":
-                        SSensor sensorData = (SSensor) object;
-                        CSensor newSensor = new CSensor(getApplicationContext());
-                        newSensor.setId(sensorData.getId());
-                        newSensor.setTitle(sensorData.getTitle());
-                        newSensor.setUnit(sensorData.getUnit());
-                        newSensor.setThresholdLow(sensorData.getThresholdLow());
-                        newSensor.setThresholdHigh(sensorData.getThresholdHigh());
-                        newSensor.setValue(sensorData.getValue());
-                        newSensor.setText(newSensor.getValue()+newSensor.getUnit());
-                        nBlock.addView(newSensor);
-                        break;
-                    //Unknown class
-                    default:
-                        Log.i("GUI_ERROR","Unknown component class");
-                        break;
-                }
-            }
-            componentLayout.addView(nBlock);
-        }
+        makeGUI();
     }
 
     public void connectionClosedMessage(){ //comprobarConexion
@@ -140,6 +69,97 @@ public class ComponentesActivity extends AppCompatActivity {
         startActivity(new Intent(ComponentesActivity.this, LoginActivity.class));
     }
 
+    private void makeGUI(){
+        //Agafa la layout on posar els components
+        LinearLayout componentLayout = findViewById(R.id.componentsLayout);
+
+        if (modelo != null && modelo.model != null) {
+
+            for (Block block : modelo.model) {//Per cada bloc
+                //Crea bloc
+                CBlock nBlock = new CBlock(getApplicationContext());
+                nBlock.setOrientation(LinearLayout.VERTICAL);
+                nBlock.setName(block.getName());
+
+                for (Object object : block) {//Per cada component del bloc
+                    switch (object.getClass().toString()) {
+                        //Switch
+                        case "class com.example.project.SSwitch":
+                            SSwitch switchData = (SSwitch) object;
+                            CSwitch newSwitch = new CSwitch(getApplicationContext());
+                            newSwitch.setId(switchData.getId());
+                            newSwitch.setTitle(switchData.getTitle());
+                            newSwitch.setChecked(switchData.getValue());
+                            newSwitch.setText("Switch:");
+                            nBlock.addView(newSwitch);
+                            break;
+                        //Slider
+                        /*
+                        case "class com.example.project.SSlider":
+                            SSlider sliderData = (SSlider) object;
+                            CSlider newSlider = new CSlider(getApplicationContext());
+                            newSlider.setId(sliderData.getId());
+                            newSlider.setTitle(sliderData.getTitle());
+                            newSlider.setValueFrom(sliderData.getMin());
+                            newSlider.setValueTo(sliderData.getMax());
+                            newSlider.setValue(sliderData.getValue());
+                            newSlider.setConversionFactor(sliderData.getConversionFactor());
+                            nBlock.addView(newSlider);
+                            break;
+                        */
+                        //Dropdown
+                        case "class com.example.project.SDropdown":
+                            SDropdown dropdownData = (SDropdown) object;
+                            CDropdown newDropdown = new CDropdown(getApplicationContext());
+                            newDropdown.setId(dropdownData.getId());
+                            newDropdown.setTitle(dropdownData.getTitle());
+
+                            //ADD OPTIONS HERE
+                            String[] items = new String[]{"1", "2", "three"};
+                            ArrayAdapter<String> adapter = new ArrayAdapter<>(this, android.R.layout.simple_spinner_dropdown_item, items);
+                            newDropdown.setAdapter(adapter);
+                            //-----
+
+                            newDropdown.setSelection(dropdownData.getValue());
+                            nBlock.addView(newDropdown);
+                            break;
+                        //Sensor
+                        case "class com.example.project.SSensor":
+                            SSensor sensorData = (SSensor) object;
+                            CSensor newSensor = new CSensor(getApplicationContext());
+                            newSensor.setId(sensorData.getId());
+                            newSensor.setTitle(sensorData.getTitle());
+                            newSensor.setUnit(sensorData.getUnit());
+                            newSensor.setThresholdLow(sensorData.getThresholdLow());
+                            newSensor.setThresholdHigh(sensorData.getThresholdHigh());
+                            newSensor.setValue(sensorData.getValue());
+                            newSensor.setText(newSensor.getValue() + newSensor.getUnit());
+                            nBlock.addView(newSensor);
+                            break;
+                        //Unknown class
+                        default:
+                            Log.i("GUI_ERROR", "Unknown component class");
+                            break;
+                    }
+                }
+                componentLayout.addView(nBlock);
+            }
+        } else {
+            AlertDialog.Builder builder = new AlertDialog.Builder(Client.act);
+            builder.setTitle("Null model error");
+            builder.setMessage("No model loaded on the server\nQuery for model again?");
+            builder.setPositiveButton("Ok", new DialogInterface.OnClickListener() {
+                public void onClick(DialogInterface dialog, int whichButton) {
+                    socket.client.send("getModel");
+                    try {Thread.sleep(1000);}
+                    catch (InterruptedException e) {e.printStackTrace();}
+                    makeGUI();
+                }
+            });
+            builder.show();
+        }
+    }
+
 }
 
 class CBlock extends LinearLayout {
@@ -161,11 +181,7 @@ class CSwitch extends Switch {
     public void setTitle(String title) {this.title = title;}
     public String getTitle() {return title;}
 
-    private int conversionFactor;
-    public void setConversionFactor(int conversionFactor) {this.conversionFactor = conversionFactor;}
-    public int getConversionFactor() {return conversionFactor;}
-
-    public String toString() {return "switch="+"id:"+id+",title:"+title+",value:"+isSelected();}
+    public String toString() {return "switch="+"id:"+id+",title:"+title+",value:"+isChecked();}
 }
 
 class CSlider extends Slider {

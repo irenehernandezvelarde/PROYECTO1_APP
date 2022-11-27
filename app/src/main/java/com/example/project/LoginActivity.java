@@ -36,31 +36,35 @@ public class LoginActivity extends AppCompatActivity {
         //LOGIN
         loginButton.setOnClickListener(new View.OnClickListener() {
             @Override public void onClick(View view) {
+
                 //SERVER CONNECTION
                 socket.connecta();
                 //Waiting for connection to open (triga una mica)
-                try {Thread.sleep(2000);}
+                try {Thread.sleep(1000);}
                 catch (InterruptedException e) {e.printStackTrace();}
-                if (socket.client.isOpen()) { //Si s'ha pogut conectar
+                //Si s'ha pogut conectar
+                if (socket.client.isOpen()) {
                     //CREDENTIAL CHECK
                     String[] arrayUser = {user.getText().toString(), password.getText().toString()};
-                    try {Thread.sleep(500);
-                    } catch (InterruptedException e) {e.printStackTrace();}
+                    try {Thread.sleep(500);}
+                    catch (InterruptedException e) {e.printStackTrace();}
                     socket.client.send(Client.objToBytes(arrayUser));
                     //CREDENTIAL FIELDS RESET
                     server.setText("");
                     user.setText("");
                     password.setText("");
                     //goes to login method to continue
-                } else { //Si no s'ha pogut conectar (mostra un popup)
+                //Si no s'ha pogut conectar (mostra un popup)
+                } else {
                     AlertDialog.Builder builder = new AlertDialog.Builder(Client.act);
-                    builder.setTitle("Connection error");
+                    builder.setTitle("Connection attempt failed");
                     builder.setMessage("Unable to connect to the server.\nMaybe server is not running?");
                     builder.setPositiveButton("Ok", new DialogInterface.OnClickListener() {
                         public void onClick(DialogInterface dialog, int whichButton) {}
                     });
                     builder.show();
                 }
+
             }
         });
 
@@ -76,8 +80,6 @@ public class LoginActivity extends AppCompatActivity {
 
     public void login(boolean correctCredentials) {
         if (correctCredentials) {
-            //REQUEST MODEL TO SERVER
-                //socket.client.send("getModel");
             //SYNC CONNECTION WITH COMPONENT ACTIVITY
             ComponentesActivity.socket = LoginActivity.socket;
             //LAUNCH COMPONENT ACTIVITY
