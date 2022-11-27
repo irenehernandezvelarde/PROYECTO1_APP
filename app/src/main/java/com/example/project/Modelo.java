@@ -29,7 +29,7 @@ public class Modelo {
                 String[] componentParams = component.split("=")[1].split(",");
                 switch (componentType){
                     case "switch":
-                        CSwitch newSwitch = new CSwitch();
+                        SSwitch newSwitch = new SSwitch();
                         for (String param : componentParams){
                             if (param.isEmpty()){break;}
                             String pName = param.split(":")[0];
@@ -56,7 +56,7 @@ public class Modelo {
                         newBlock.add(newSwitch);
                         break;
                     case "slider":
-                        CSlider newSlider = new CSlider();
+                        SSlider newSlider = new SSlider();
                         for (String param : componentParams){
                             if (param.isEmpty()){break;}
                             String pName = param.split(":")[0];
@@ -91,7 +91,7 @@ public class Modelo {
                         newBlock.add(newSlider);
                         break;
                     case "dropdown":
-                        CDropdown newDropdown = new CDropdown();
+                        SDropdown newDropdown = new SDropdown();
                         for (String param : componentParams) {
                             if (param.isEmpty()){break;}
                             String pName = param.split(":")[0];
@@ -107,7 +107,7 @@ public class Modelo {
                                     String[] options = pValue.split("I");
                                     for (String option : options){
                                         if (option.isEmpty()){break;}
-                                        CDropdownOption newOption = new CDropdownOption();
+                                        SDropdownOption newOption = new SDropdownOption();
                                         String[] optionParams = option.split("-");
                                         for (String optionParam : optionParams){
                                             String opPaName = optionParam.split("_")[0];
@@ -141,7 +141,7 @@ public class Modelo {
                         newBlock.add(newDropdown);
                         break;
                     case "sensor":
-                        CSensor newSensor = new CSensor();
+                        SSensor newSensor = new SSensor();
                         for (String param : componentParams) {
                             if (param.isEmpty()){break;}
                             String pName = param.split(":")[0];
@@ -190,7 +190,7 @@ class Block extends ArrayList<Object>{
     public String getName() {return name;}
 }
 
-class CSwitch {
+class SSwitch {
 
     private int id;
     public void setId(int id) {this.id = id;}
@@ -207,7 +207,7 @@ class CSwitch {
     public String toString() {return "switch="+"id:"+id+",title:"+title+",value:"+value;}
 }
 
-class CSlider{
+class SSlider{
 
     private int id;
     public void setId(int id) {this.id = id;}
@@ -240,7 +240,7 @@ class CSlider{
     public String toString() {return "slider="+"id:"+id+",title:"+title+",min:"+min+",max:"+max+",step:"+step+",conversionFactor:"+conversionFactor+",value:"+value;}
 }
 
-class CDropdown {
+class SDropdown {
 
     int id;
     public int getId() {return id;}
@@ -254,11 +254,11 @@ class CDropdown {
     public void setValue(int value){this.value = value;}
     public int getValue(){return value;}
 
-    ArrayList<CDropdownOption> options = new ArrayList<CDropdownOption>();
+    ArrayList<SDropdownOption> options = new ArrayList<SDropdownOption>();
 
 }
 
-class CDropdownOption {
+class SDropdownOption {
 
     int id;
     public void setId(int id){this.id = id;}
@@ -274,7 +274,7 @@ class CDropdownOption {
 
 }
 
-class CSensor {
+class SSensor {
 
     private int id;
     public void setId(int id) {this.id = id;}
