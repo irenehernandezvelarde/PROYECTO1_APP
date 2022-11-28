@@ -116,8 +116,11 @@ public class ComponentesActivity extends AppCompatActivity {
                             newDropdown.setTitle(dropdownData.getTitle());
 
                             //ADD OPTIONS HERE
-                            String[] items = new String[]{"1", "2", "three"};
-                            ArrayAdapter<String> adapter = new ArrayAdapter<>(this, android.R.layout.simple_spinner_dropdown_item, items);
+                            ArrayList<String> optionValues = new ArrayList<String>();
+                            for (SDropdownOption option : dropdownData.getOptions()){
+                                optionValues.add(option.getValue());
+                            }
+                            ArrayAdapter<String> adapter = new ArrayAdapter<>(this, android.R.layout.simple_spinner_dropdown_item, optionValues);
                             newDropdown.setAdapter(adapter);
                             //-----
 

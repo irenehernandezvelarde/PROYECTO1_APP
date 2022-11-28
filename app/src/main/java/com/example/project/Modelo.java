@@ -104,9 +104,9 @@ public class Modelo {
                                 case "title":
                                     newDropdown.setTitle(pValue);
                                     break;
-                                case "options": //UNIMPLEMENTED
-                                    String[] options = pValue.split("I");
-                                    for (String option : options){
+                                case "options":
+                                    String[] optionsData = pValue.split("I");
+                                    for (String option : optionsData){
                                         if (option.isEmpty()){break;}
                                         SDropdownOption newOption = new SDropdownOption();
                                         String[] optionParams = option.split("-");
@@ -256,6 +256,7 @@ class SDropdown {
     public int getValue(){return value;}
 
     ArrayList<SDropdownOption> options = new ArrayList<SDropdownOption>();
+    public ArrayList<SDropdownOption> getOptions() {return options;}
 
 }
 
