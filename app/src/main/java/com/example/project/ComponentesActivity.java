@@ -1,5 +1,6 @@
 package com.example.project;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.app.AlertDialog;
@@ -10,7 +11,9 @@ import android.graphics.Color;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
+import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
+import android.widget.CompoundButton;
 import android.widget.LinearLayout;
 import android.widget.Spinner;
 import android.widget.Switch;
@@ -92,6 +95,11 @@ public class ComponentesActivity extends AppCompatActivity {
                             newSwitch.setTitle(switchData.getTitle());
                             newSwitch.setChecked(switchData.getValue());
                             newSwitch.setText("Switch:");
+                            newSwitch.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+                                @Override public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
+                                    socket.client.send("switchUpdate/"+newSwitch.getId()+"/"+newSwitch.isChecked());
+                                }
+                            });
                             nBlock.addView(newSwitch);
                             break;
                         //Slider
@@ -106,6 +114,13 @@ public class ComponentesActivity extends AppCompatActivity {
                             newSlider.setStepSize(sliderData.getStep()/sliderData.getConversionFactor());
                             newSlider.setTickVisible(true);
                             newSlider.setConversionFactor(sliderData.getConversionFactor());
+                            newSlider.addOnChangeListener(new Slider.OnChangeListener() {
+                                @Override
+                                public void onValueChange(@NonNull Slider slider, float value, boolean fromUser) {
+                                    newSlider.setValue((int)(Math.round(newSlider.getValue()*2)/2.0));
+                                    socket.client.send("switchUpdate/"+newSlider.getId()+"/"+newSlider.getValue());
+                                }
+                            });
                             nBlock.addView(newSlider);
                             break;
                         //Dropdown
@@ -125,6 +140,13 @@ public class ComponentesActivity extends AppCompatActivity {
                             //-----
 
                             newDropdown.setSelection(dropdownData.getValue());
+                            newDropdown.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener(){
+                                @Override
+                                public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
+                                    socket.client.send("switchUpdate/"+newDropdown.getId()+"/"+newDropdown.getSelectedItemPosition());
+                                }
+                                @Override public void onNothingSelected(AdapterView<?> adapterView) {}
+                            });
                             nBlock.addView(newDropdown);
                             break;
                         //Sensor
