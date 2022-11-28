@@ -203,7 +203,7 @@ class CSlider extends Slider {
     public String toString() {return "slider="+"id:"+id+",title:"+title+",min:"+getValueFrom()+",max:"+getValueTo()+",step:"+getStepSize()+",conversionFactor:"+conversionFactor+",value:"+getValue();}
 }
 
-class CDropdown extends Spinner {
+class CDropdown extends androidx.appcompat.widget.AppCompatSpinner {
     public CDropdown(Context context) {super(context);this.setBackgroundColor(Color.WHITE);}
 
     int id;
