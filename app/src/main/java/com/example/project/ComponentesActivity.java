@@ -6,6 +6,7 @@ import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
@@ -86,7 +87,7 @@ public class ComponentesActivity extends AppCompatActivity {
                         //Switch
                         case "class com.example.project.SSwitch":
                             SSwitch switchData = (SSwitch) object;
-                            CSwitch newSwitch = new CSwitch(getApplicationContext());
+                            CSwitch newSwitch = new CSwitch(this);
                             newSwitch.setId(switchData.getId());
                             newSwitch.setTitle(switchData.getTitle());
                             newSwitch.setChecked(switchData.getValue());
@@ -94,23 +95,23 @@ public class ComponentesActivity extends AppCompatActivity {
                             nBlock.addView(newSwitch);
                             break;
                         //Slider
-                        /*
                         case "class com.example.project.SSlider":
                             SSlider sliderData = (SSlider) object;
-                            CSlider newSlider = new CSlider(getApplicationContext());
+                            CSlider newSlider = new CSlider(this);
                             newSlider.setId(sliderData.getId());
                             newSlider.setTitle(sliderData.getTitle());
-                            newSlider.setValueFrom(sliderData.getMin());
-                            newSlider.setValueTo(sliderData.getMax());
-                            newSlider.setValue(sliderData.getValue());
+                            newSlider.setValueFrom(sliderData.getMin()/sliderData.getConversionFactor());
+                            newSlider.setValueTo(sliderData.getMax()/sliderData.getConversionFactor());
+                            newSlider.setValue(sliderData.getValue()/sliderData.getConversionFactor());
+                            newSlider.setStepSize(sliderData.getStep()/sliderData.getConversionFactor());
+                            newSlider.setTickVisible(true);
                             newSlider.setConversionFactor(sliderData.getConversionFactor());
                             nBlock.addView(newSlider);
                             break;
-                        */
                         //Dropdown
                         case "class com.example.project.SDropdown":
                             SDropdown dropdownData = (SDropdown) object;
-                            CDropdown newDropdown = new CDropdown(getApplicationContext());
+                            CDropdown newDropdown = new CDropdown(this);
                             newDropdown.setId(dropdownData.getId());
                             newDropdown.setTitle(dropdownData.getTitle());
 
@@ -126,7 +127,7 @@ public class ComponentesActivity extends AppCompatActivity {
                         //Sensor
                         case "class com.example.project.SSensor":
                             SSensor sensorData = (SSensor) object;
-                            CSensor newSensor = new CSensor(getApplicationContext());
+                            CSensor newSensor = new CSensor(this);
                             newSensor.setId(sensorData.getId());
                             newSensor.setTitle(sensorData.getTitle());
                             newSensor.setUnit(sensorData.getUnit());
@@ -203,7 +204,7 @@ class CSlider extends Slider {
 }
 
 class CDropdown extends Spinner {
-    public CDropdown(Context context) {super(context);}
+    public CDropdown(Context context) {super(context);this.setBackgroundColor(Color.WHITE);}
 
     int id;
     public int getId() {return id;}
