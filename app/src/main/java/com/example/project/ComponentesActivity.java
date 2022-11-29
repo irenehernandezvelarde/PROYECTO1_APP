@@ -10,6 +10,7 @@ import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.Gravity;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
@@ -85,6 +86,10 @@ public class ComponentesActivity extends AppCompatActivity {
                 nBlock.setOrientation(LinearLayout.VERTICAL);
                 nBlock.setName(block.getName());
 
+                Spacer2 title = new Spacer2(this);
+                title.setText(nBlock.getName());
+                nBlock.addView(title);
+
                 for (Object object : block) {//Per cada component del bloc
                     switch (object.getClass().toString()) {
                         //Switch
@@ -93,14 +98,16 @@ public class ComponentesActivity extends AppCompatActivity {
                             CSwitch newSwitch = new CSwitch(this);
                             newSwitch.setId(switchData.getId());
                             newSwitch.setTitle(switchData.getTitle());
-                            newSwitch.setChecked(switchData.getValue());
+                            newSwitch.setChecked(Boolean.valueOf(switchData.getValue()));
                             newSwitch.setText("Switch:");
                             newSwitch.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
                                 @Override public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
                                     socket.client.send("switchUpdate/"+newSwitch.getId()+"/"+newSwitch.isChecked());
                                 }
                             });
+                            nBlock.addView(new Spacer(this));
                             nBlock.addView(newSwitch);
+                            nBlock.addView(new Spacer(this));
                             break;
                         //Slider
                         case "class com.example.project.SSlider":
@@ -122,6 +129,7 @@ public class ComponentesActivity extends AppCompatActivity {
                                 }
                             });
                             nBlock.addView(newSlider);
+                            nBlock.addView(new Spacer(this));
                             break;
                         //Dropdown
                         case "class com.example.project.SDropdown":
@@ -148,6 +156,7 @@ public class ComponentesActivity extends AppCompatActivity {
                                 @Override public void onNothingSelected(AdapterView<?> adapterView) {}
                             });
                             nBlock.addView(newDropdown);
+                            nBlock.addView(new Spacer(this));
                             break;
                         //Sensor
                         case "class com.example.project.SSensor":
@@ -161,6 +170,7 @@ public class ComponentesActivity extends AppCompatActivity {
                             newSensor.setValue(sensorData.getValue());
                             newSensor.setText(newSensor.getValue() + newSensor.getUnit());
                             nBlock.addView(newSensor);
+                            nBlock.addView(new Spacer(this));
                             break;
                         //Unknown class
                         default:
@@ -169,6 +179,7 @@ public class ComponentesActivity extends AppCompatActivity {
                     }
                 }
                 componentLayout.addView(nBlock);
+                componentLayout.addView(new Spacer(this));
             }
         } else {
             AlertDialog.Builder builder = new AlertDialog.Builder(Client.act);
@@ -189,7 +200,10 @@ public class ComponentesActivity extends AppCompatActivity {
 }
 
 class CBlock extends LinearLayout {
-    public CBlock(Context context) {super(context);}
+    public CBlock(Context context) {
+        super(context);
+        setBackgroundColor(Color.rgb(255, 250, 240));
+    }
 
     String name;
     public void setName(String name) {this.name = name;}
@@ -288,3 +302,21 @@ class CSensor extends androidx.appcompat.widget.AppCompatTextView{
         return "sensor=" + "id:"+id+",title:"+title+",unit:"+unit+",low:"+thresholdLow+",high:"+thresholdHigh+",value:"+value;
     }
 }
+class Spacer extends androidx.appcompat.widget.AppCompatTextView{
+
+    public Spacer(Context context) {
+        super(context);
+        setText("");
+    }
+}
+class Spacer2 extends androidx.appcompat.widget.AppCompatTextView{
+
+    public Spacer2(Context context) {
+        super(context);
+        setTextAlignment(TEXT_ALIGNMENT_CENTER);
+        setTextSize(17);
+        setTextColor(Color.BLACK);
+        setBackgroundColor(Color.rgb(123, 104, 238));
+    }
+}
+
